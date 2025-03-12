@@ -50,6 +50,13 @@ public class JwtHelper {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    public Map<String, Object> extractRoleAndPermissions(String token) {
+        Claims claims = extractAllClaims(token);
+        Map<String, Object> rolePermissions = new HashMap<>();
+        rolePermissions.put("role", claims.get("role", String.class));
+        rolePermissions.put("permissions", claims.get("permissions", List.class));
+        return rolePermissions;
+    }
 
     // Check if Token is Expired
     private Boolean isTokenExpired(String token) {

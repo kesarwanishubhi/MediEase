@@ -3,12 +3,15 @@ package com.shubhi.mediease.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.ConnectionBuilder;
+
 @Entity
 @Table(name = "doctors")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Doctors {
 
     @Id
@@ -35,11 +38,13 @@ public class Doctors {
     @Column(nullable = false)
     private String hospitalAddress;
 
-    @Column(nullable = false)
-    private String availability; // Example: "10 AM - 5 PM"
+
+    @Column(columnDefinition = "TEXT")
+    private String schedule;
 
     @Column(nullable = false)
     private boolean isApproved = false; // Admin approval required
+
 
     @PrePersist //This method is triggered before an entity is saved for the first time
     @PreUpdate //This method is triggered before an entity is updated
