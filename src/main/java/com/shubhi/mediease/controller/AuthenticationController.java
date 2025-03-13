@@ -1,9 +1,8 @@
 package com.shubhi.mediease.controller;
 
-import com.shubhi.mediease.dto.Admindetails;
-import com.shubhi.mediease.dto.DoctorReq;
-import com.shubhi.mediease.dto.LoginRequest;
+import com.shubhi.mediease.dto.*;
 import com.shubhi.mediease.service.DoctorService;
+import com.shubhi.mediease.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import com.shubhi.mediease.service.LoginService;
 public class AuthenticationController {
     private final LoginService LoginService;
     private final DoctorService doctorService;
+    private final PatientService patientService;
 
 
     @PostMapping("/login")
@@ -44,6 +44,11 @@ public class AuthenticationController {
         } else {
             return ResponseEntity.status(403).body("You are not an admin");
         }
+    }
+    @PostMapping("/registerPatient")
+    public ResponseEntity<?> registerPatient(@RequestBody RegisterPatient dto) {
+        DoctorResponse response = patientService.registerPatient(dto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/registerAdmin")
