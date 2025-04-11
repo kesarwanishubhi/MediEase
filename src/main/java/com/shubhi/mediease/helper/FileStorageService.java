@@ -33,16 +33,16 @@ public class FileStorageService {
         return new File(filePath);
     }
 
-    public List<String> getAllFileNames(String folderPath) {
-        File folder = new File(folderPath);
-        File[] files = folder.listFiles();
-        if (files != null) {
-            return Arrays.stream(files)
-                    .filter(File::isFile)
-                    .map(File::getName)
-                    .collect(Collectors.toList());
-        } else {
-            return new ArrayList<>();
-        }
-    }
+//    public List<String> getAllFileNames(String folderPath) {
+//        File folder = new File(folderPath);
+//        File[] files = folder.listFiles();
+//        if (files != null) {
+//            return Arrays.stream(files)
+//                    .filter(File::isFile)
+//                    .map(File::getName)
+//                    .collect(Collectors.toList());
+//        } else {
+//            return new ArrayList<>();
+//        }
+//    }
 }

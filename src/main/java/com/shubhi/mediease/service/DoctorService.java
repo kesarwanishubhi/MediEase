@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shubhi.mediease.dto.*;
 import com.shubhi.mediease.entity.Doctors;
+import com.shubhi.mediease.entity.Hospitals;
 import com.shubhi.mediease.entity.Role;
 import com.shubhi.mediease.entity.Users;
 import com.shubhi.mediease.helper.EncryptionService;
@@ -13,6 +14,7 @@ import com.shubhi.mediease.helper.JwtHelper;
 import com.shubhi.mediease.helper.ResourceNotFoundException;
 import com.shubhi.mediease.mapper.DoctorMapper;
 import com.shubhi.mediease.repo.Doctorsrepo;
+import com.shubhi.mediease.repo.HospitalRepo;
 import com.shubhi.mediease.repo.UsersRepo;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class DoctorService {
     private final UsersRepo userRepo;
+    private final HospitalRepo hospitalRepo;
     private final Doctorsrepo doctorRepository;
     private final DoctorMapper doctorMapper;
     private final JwtHelper jwtHelper;
@@ -53,6 +56,7 @@ public class DoctorService {
 
         // Hash the password
         String storedPassword = encryptionService.encode(rawPassword);
+
 
         // Create doctor entity using builder
         Users doctor = Users.builder()
@@ -112,6 +116,8 @@ public class DoctorService {
 
         // Convert Schedule to JSON
         String scheduleJson = convertScheduleToJson(request.schedule());
+        Hospitals hospital = hospitalRepo.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Hospital with ID 1 not found."));
 
         // Create Doctor Entity using Builder
         Doctors doctor = Doctors.builder()
@@ -123,6 +129,7 @@ public class DoctorService {
                 .hospitalAddress(request.hospitalAddress())
                 .schedule(scheduleJson)
                 .isApproved(false) // Admin approval required
+                .hospital(hospital)
                 .build();
 
         doctorRepository.save(doctor);

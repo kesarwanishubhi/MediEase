@@ -7,9 +7,10 @@ import com.shubhi.mediease.entity.Patients;
 import com.shubhi.mediease.entity.Users;
 
 import com.shubhi.mediease.entity.Role;
+import lombok.Builder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
+@Builder
 @Component
 public class PatientMapper {
 
@@ -31,15 +32,22 @@ public class PatientMapper {
 
     // Convert DTO to Patient entity
     public Patients toPatientEntity(RegisterPatient dto, Users user) {
-        return new Patients(null, user, dto.getGender(), dto.getAge(), dto.getAddress(),
-                dto.getBloodGroup(), dto.getEmergencyContact());
+        return Patients.builder()
+                .user(user)
+                .gender(dto.getGender())
+                .age(dto.getAge())
+                .address(dto.getAddress())
+                .bloodGroup(dto.getBloodGroup())
+                .emergencyContact(dto.getEmergencyContact())
+                .build();
     }
     public static DoctorResponse toDto(Users user) {
         return new DoctorResponse(
                 user.getUsername(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getPassword()  // Return raw password (only for initial registration)
+                user.getPassword()
+                // Return raw password (only for initial registration)
         );
     }
 

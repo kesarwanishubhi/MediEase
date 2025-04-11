@@ -1,12 +1,16 @@
 package com.shubhi.mediease.controller;
 
 import com.shubhi.mediease.dto.*;
+import com.shubhi.mediease.helper.JwtHelper;
+import com.shubhi.mediease.service.ConsentService;
 import com.shubhi.mediease.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.shubhi.mediease.service.LoginService;
+
+import java.security.Principal;
 
 
 @RequiredArgsConstructor
@@ -15,7 +19,8 @@ import com.shubhi.mediease.service.LoginService;
 public class DoctorController {
     private final LoginService LoginService;
     private final DoctorService doctorService;
-
+    private final ConsentService consentService;
+    private final JwtHelper jwtHelper;
 
     @PostMapping("/complete-profile")
     public ResponseEntity<DoctorProfileResponse> completeProfile(
@@ -36,6 +41,12 @@ public class DoctorController {
         String t = token.substring(7); // Remove "Bearer " prefix
         doctorService.updateDoctorProfile(t, doctorUpdateDTO);
         return ResponseEntity.ok("Doctor profile updated successfully");
+    }
+    @PostMapping("/consentrequest")
+    public ResponseEntity<?> requestConsent(@Valid @RequestBody ConsentRequest consentRequestDTO, @RequestHeader("Authorization") String token) {
+        String t = token.substring(7);
+        String email=jwtHelper.extractEmail(t);
+        return consentService.requestConsent(email, consentRequestDTO);
     }
 
 }

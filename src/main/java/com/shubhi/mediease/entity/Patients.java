@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patients {
@@ -40,6 +42,8 @@ public class Patients {
 
     @Column(nullable = true)
     private String emergencyContact; // Contact number of a relative or guardian
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Consents> consents; // Consent records associated with this patient
 
     @PrePersist
     @PreUpdate

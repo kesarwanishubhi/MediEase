@@ -12,9 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+import static com.shubhi.mediease.helper.SecretKeys.*;
+
 @Service
 public class EncryptionFileService {
-    private static final byte[] COMMON_KEY = ;
+    private static final byte[] COMMON_KEY = AES_ENCRYPTION_KEY.getBytes(StandardCharsets.UTF_8);
 
     public void encryptAndStoreFile(String filePath, InputStream inputStream) throws Exception {
         try (OutputStream outputStream = new CipherOutputStream(

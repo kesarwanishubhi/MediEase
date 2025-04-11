@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.ConnectionBuilder;
+import java.util.List;
 
 @Entity
 @Table(name = "doctors")
@@ -44,6 +45,13 @@ public class Doctors {
 
     @Column(nullable = false)
     private boolean isApproved = false; // Admin approval required
+    // 🔹 Added Relationship with Hospital
+    @ManyToOne
+    @JoinColumn(name = "hospital_id", referencedColumnName = "id", nullable = false)
+    private Hospitals hospital;  // Many doctors belong to one hospital
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Consents> consents; // Consent records where this doctor has access
 
 
     @PrePersist //This method is triggered before an entity is saved for the first time

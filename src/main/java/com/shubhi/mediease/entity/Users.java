@@ -14,6 +14,8 @@ import java.util.UUID;
 })
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class Users {
 
@@ -65,5 +67,7 @@ public class Users {
     public void setUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
     }
+
+
 }
 
